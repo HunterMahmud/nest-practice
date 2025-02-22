@@ -3,18 +3,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUsersDto } from './dtos/create-users.dto';
 import { User } from './entities/users.entity';
+import { JwtService } from '@nestjs/jwt';
 
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
 
   async register(data: any): Promise<User> {
     console.log('data in service: ', data);
-    return this.userRepository.save(data);
+    try{
+        const user = await this.userRepository.findOne({
+            where: {
+                email: data?.email
+            }
+        })
+        if(user){
+            throw new BadRequestException("user already exists")
+        }
+        return this.userRepository.save(data);
+    }
+    catch(err){
+        throw new BadRequestException("user already found")
+    }
   }
 
   async findUserByEmail(email: string, pass: string) {
@@ -35,8 +49,10 @@ export class UsersService {
         throw new Error();
       }
 
+      
+
       const {password, ...result} = user;
-      return result;
+      return {...result};
 
       //
     } catch (err) {

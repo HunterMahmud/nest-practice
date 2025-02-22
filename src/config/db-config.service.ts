@@ -22,6 +22,10 @@ class ConfigService {
     return Number(this.getValue('PORT')) as number;
   }
 
+  public getJwtSecret(): string{
+    return this.getValue("JWT_SECRET");
+  }
+
   public isProduction(): boolean {
     const mode = this.getValue('MODE', false);
     return mode != 'DEV';
@@ -34,6 +38,8 @@ class ConfigService {
 
     return allowOrigin;
   }
+
+  
 
   public getTypeOrmConfig() {
     return {
@@ -55,6 +61,7 @@ const envConfigService = new ConfigService(process.env).ensureValues([
   'POSTGRES_PASSWORD',
   'POSTGRES_DATABASE',
   'POSTGRES_SUNCHRONIZE',
+  'JWT_SECRET',
   'ALLOW_ORIGINS',
   'MODE',
 ]);
