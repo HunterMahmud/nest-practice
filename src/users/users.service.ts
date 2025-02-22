@@ -1,42 +1,46 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUsersDto } from './dtos/create-users.dto';
+import { User } from './entities/users.entity';
 
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UsersService{
+export class UsersService {
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {}
 
-    // public users : CreateUsersDto[] = [
-    //     {
-    //         id: 1,
-    //         email: 'a1@gmail.com',
-    //         password: 'abc',
-    //         full_name:"name1"
-    //     },
-    //     {
-    //         id: 2,
-    //         email: 'a2@gmail.com',
-    //         password: 'abc',
-    //         full_name:"name2"
-    //     },
-    //     {
-    //         id: 3,
-    //         email: 'a3@gmail.com',
-    //         password: 'abc',
-    //         full_name:"name3"
-    //     },
-    //     {
-    //         id: 4,
-    //         email: 'a4@gmail.com',
-    //         password: 'abc',
-    //         full_name:"name4"
-    //     },
-    // ]
+  async register(data: any): Promise<User> {
+    console.log('data in service: ', data);
+    return this.userRepository.save(data);
+  }
 
-    findAllUser(){
-        return 'this wil return all users';
+  async findUserByEmail(email: string, pass: string) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!user) {
+        throw new BadRequestException('not authorized');
+      }
+
+      const res = await bcrypt.compare(pass, user.password);
+      if (!res) {
+        console.log("hello");
+        throw new Error();
+      }
+
+      const {password, ...result} = user;
+      return result;
+
+      //
+    } catch (err) {
+      throw new BadRequestException('unauthorized from below');
     }
-
-    login(){
-        return "this will return login users"
-    }
+  }
 }
