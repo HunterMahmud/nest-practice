@@ -32,11 +32,13 @@ class ConfigService {
   }
 
   public getOrigin(): string[] {
-    const allowOrigin: string[] = this.getValue('ALLOW_ORIGINS', false).split(
-      ',',
-    );
-
-    return allowOrigin;
+    try {
+      const allowOrigin: string[] = this.getValue('ALLOW_ORIGINS', false).split(',').map(origin => origin.trim());
+  
+      return allowOrigin;
+    } catch (error: any) {
+      return []
+    }
   }
 
   
