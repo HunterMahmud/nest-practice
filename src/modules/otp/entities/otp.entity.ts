@@ -8,6 +8,6 @@ export class Otp{
     @Column({unique: true, nullable: false})
     email: string;
 
-    @Column()
+    @Column({nullable: true})
     otp: number;
 }
