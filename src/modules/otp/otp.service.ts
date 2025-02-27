@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SendDto } from './dtos/send.dto';
+import { VerifyOtpDto } from './dtos/verify-otp.dto';
 
 @Injectable()
 export class OtpService{
@@ -7,7 +8,7 @@ export class OtpService{
         return '123456';
     }
 
-    async verify(data:string): Promise<boolean>{
-        return data === '123456';
+    async verify(data:VerifyOtpDto): Promise<boolean>{
+        return data.otp === 123456;
     }
 }

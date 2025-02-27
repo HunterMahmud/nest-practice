@@ -5,7 +5,6 @@ import * as bcrypt from 'bcrypt'
 export class UtilsService{
     async getHash(text: string): Promise<string>{
         const salt = await bcrypt.genSalt();
-        console.log("salt is: ",salt);
         return await bcrypt.hash(text, salt);
     }
 
@@ -27,9 +26,9 @@ export class UtilsService{
                 otp += randomDigit;
             }
         }
-
         return parseInt(otp);
     }
+
 
 
 }

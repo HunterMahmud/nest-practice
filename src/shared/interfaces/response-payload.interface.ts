@@ -1,15 +1,15 @@
 export interface IResponsePayload<T>{
     success: boolean;
+    status:number;
     message?: string;
     result?: T;
     total?: number;
-    status?:number;
 }
 
 export interface ILoginResponsePayload{
     success: boolean;
+    status: number;
     token?: string;
     message?:string;
-    status?: number;
 }
 
