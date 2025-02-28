@@ -1,5 +1,7 @@
-import {Controller, Get, Post} from "@nestjs/common";
+import {Controller, Get, Post, UseGuards} from "@nestjs/common";
+import { ProfileGuard } from './profile.guard';
 
+@UseGuards(ProfileGuard)
 @Controller('profile')
 export class ProfileController{
 
