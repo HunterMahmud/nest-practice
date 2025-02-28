@@ -1,5 +1,6 @@
 import { UserRole } from 'src/shared/enums/user-role.enum';
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm'
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn} from 'typeorm'
+import { Profile } from './../../profile/entities/profile.entity';
 
 @Entity("users")
 export class User{
@@ -23,5 +24,9 @@ export class User{
 
     @UpdateDateColumn({type: 'timestamp', default: ()=>'CURRENT_TIMESTAMP'})
     updatedAt: Date;
+
+    @OneToOne(()=> Profile, {nullable: false, cascade: true, eager: true})
+    @JoinColumn()
+    profile: Profile;
 
 }

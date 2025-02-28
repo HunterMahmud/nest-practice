@@ -7,18 +7,18 @@ import { JwtModule } from '@nestjs/jwt';
 import { envConfigService } from './config/db-config.service';
 import jwtConfig from './config/jwt.config';
 import { AuthModule } from './modules/auth/auth.module';
-
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
-  ConfigModule.forRoot({
+    ConfigModule.forRoot({
       isGlobal: true,
-      load: [jwtConfig]
+      load: [jwtConfig],
     }),
     TypeOrmModule.forRoot(appDataSource.options),
     AuthModule,
     UsersModule,
-
+    ProfileModule,
   ],
   controllers: [],
   providers: [],
